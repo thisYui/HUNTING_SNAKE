@@ -1,7 +1,9 @@
-#pragma once
+Ôªø#pragma once
 #ifndef _MY_OBJECT
 #define _MY_OBJECT
 
+#include <iostream>
+#include <string>
 #define ONE_SECOND 1000
 #define SNAKE_COLOR 10
 #define FOOD_COLOR 12
@@ -15,48 +17,105 @@ const int SNAKE_MAX_SPEED = 100;
 enum direction {
 	UP, DOWN, LEFT, RIGHT
 };
+enum obstacle
+{
+	normal = L' ',
+	up_left = L'‚ïî',
+	up_right = L'‚ïó',
+	down_left = L'‚ïö',
+	down_rigth = L'‚ïù',
+	horizontal = L'‚ïê',
+	vertical = L'‚ïë',
+	o_1 = L'‚ï¨',
+	o_2 = L'‚ï©',
+	o_3 = L'‚ï¶',
+	o_4 = L'‚ï†',
+	o_5 = L'‚ï£',
+	o_6 = L'‚ï≠',
+	o_7 = L'‚ïÆ',
+	o_8 = L'‚ïØ',
+	o_9 = L'‚ï∞',
+	o_10 = L'-',
+	o_11 = L'|',
+	door_1 = L'‚ù∂',
+	door_2 = L'‚ù∑',
+	door_3 = L'‚ù∏',
+	door_4 = L'‚ùπ',
+	door_5 = L'‚ù∫',
+};
+enum Word
+{
+	StarGame = 1,
+	Setting = 2,
+	History = 3,
+	About = 4,
+	Exit = 5,
+	NewGame = 6,
+	Continue = 7
+};
 struct point {
 	int x, y;
-	friend bool operator==(point a, point b);
-};
-struct food
-{
-	int x, y;
-	food();//h‡m t?o th?c ?n ng?u nhiÍn
-	~food();
 };
 struct snake
 {
 	point body[SNAKE_MAX_SIZE];
 	int length;
 	int speed;
-	snake();//h‡m t?o r?n
-	void updateLength();//h‡m c?p nh?t chi?u d‡i r?n
-	~snake();//h‡m xÛa r?n
+	snake();
+	~snake();
+};
+struct food
+{
+	int x, y;
+	food(snake s);
 };
 struct door
 {
 	point kernel;
 	point wall[5];
 	door();
-	~door();
 	//00
 	//01
 	//00
 };
-
-void eatFood(snake& snake, food food);//h‡m ?n th?c ?n
-void moveSnake(snake& snake, direction direction);//h‡m di chuy?n r?n
-void drawSnake(const snake& snake);//h‡m v? r?n
-void impactWall(const snake& snake, int width, int height, bool& isImpact);//h‡m va ch?m v?i t??ng
-void impactItself(const snake& snake, bool& isImpact);//h‡m va ch?m v?i chÌnh nÛ
-void impactDoor(const snake& snake, const door& door, bool& isImpact, bool& next);//h‡m va ch?m v?i c?a
-
-
-namespace level_1
+struct user
 {
-	struct obstacle;
+	std::string name;
+	int score;
+	double timePlay;
+	user()
+	{
+		name = "";
+		score = 0;
+		timePlay = 0.0;
+	}
+	user(const std::string& _name, int _score, double _timePlay)
+		: name(_name), score(_score), timePlay(_timePlay) {}
+};
 
+bool operator==(const point& a, const point& b);
+std::ostream& operator<<(std::ostream& out, const Word& word);
+Word operator++(Word& word, int);
+
+void eatFood(snake& snake, food food, direction direction);//h√†m ?n th?c ?n
+void moveSnake(snake& snake, direction direction);//h√†m di chuy?n r?n
+void drawSnake(const snake& snake);//h√†m v? r?n
+void impactItself(const snake& snake, bool& isImpact);//h√†m va ch?m v?i ch√≠nh n√≥
+void impactDoor(const snake& snake, const door& door, bool& isImpact, bool& next);//h√†m va ch?m v?i c?a
+
+namespace game
+{
+	void drawMap(obstacle** theMap, int x, int y);
+	void initMap(obstacle** theMap);
+	void initLevel_1(obstacle** theMap);
+	void initLevel_2(obstacle** theMap);
+	void initLevel_3(obstacle** theMap);
+	void initLevel_4(obstacle** theMap);
+	void initLevel_5(obstacle** theMap);
+
+	void impactWall(const snake& snake, const obstacle** theMap, bool& isImpact);
+
+	void drawWin();
 }
 
 #endif // !_MY_OBJECT

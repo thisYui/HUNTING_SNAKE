@@ -80,13 +80,6 @@ void setCursorColor(int color)
 
     SetConsoleCursorInfo(consoleHandle, &cursorInfo);
 }
-void setCursorSize(int size) {
-    HANDLE consoleHandle = GetStdHandle(STD_OUTPUT_HANDLE);
-    CONSOLE_CURSOR_INFO Info;
-    Info.bVisible = TRUE;
-    Info.dwSize = size;
-    SetConsoleCursorInfo(consoleHandle, &Info);
-}
 void noneCursorType()
 {
     CONSOLE_CURSOR_INFO Info;

@@ -20,7 +20,6 @@ void setConsoleTextColor(int background, int text);// thay đổi màu nền và
 void setBackgroundColor(int color);// thay đổi màu nền
 void getCursorPosition(int& x, int& y);// lấy tọa độ con trỏ
 void setCursorColor(int color);// thay đổi màu con trỏ	
-void setCursorSize(int size);// thay đổi kích thước con trỏ
 void noneCursorType();// ẩn con trỏ
 void setFontSize(int height, int width);// thay đổi kích thước font chữ
 void setConsoleTitle(const char* title);// thay đổi tiêu đề console

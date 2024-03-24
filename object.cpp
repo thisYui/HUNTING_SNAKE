@@ -1,36 +1,41 @@
 #include "object.h"
 #include "console.h"
-#include <iostream>
+#include <io.h>
+#include <fcntl.h>
 
 const char* LIST = "2312024523120258231202602312021923120213";
+extern const int MAXTRIX_SIZE_WIDTH = 60;
+extern const int MAXTRIX_SIZE_HEIGHT = 20;
 
-food::food()
-{
-	srand(time(NULL));
-	x = rand() % (FOOD_SIZE - 1) + 1;
-	y = rand() % (FOOD_SIZE - 1) + 1;
-
-	gotoXY(x, y);
-	std::cout << " ";
-}
-food::~food()
-{
-
-	gotoXY(x, y);
-	std::cout << " ";
-}
 snake::snake()
 {
-	speed = SNAKE_MIN_SPEED;
 	length = SNAKE_INIT_SIZE;
-}
-void snake::updateLength()
-{
-	length++;
+	speed = SNAKE_MIN_SPEED;
+	for (int i = 0; i < length; i++)
+	{
+		body[i].x = 0;
+		body[i].y = 0;
+	}
 }
 snake::~snake()
 {
 	delete[] body;
+}
+food::food(snake s)
+{
+	srand(time(NULL));
+	while (true)
+	{
+		x = rand() % (FOOD_SIZE - 1) + 1;
+		y = rand() % (FOOD_SIZE - 1) + 1;
+		for (int i = 0; i < s.length; i++)
+		{
+			if (s.body[i].x == x && s.body[i].y == y) continue;
+		}
+		break;
+	}
+	gotoXY(x, y);
+	std::cout << " ";
 }
 door::door()
 {
@@ -51,25 +56,60 @@ door::door()
 		std::cout << " ";
 	}
 }
-door::~door()
-{
-	delete[] wall;
-}
 
-bool operator==(point a, point b)
+bool operator==(const point& a, const point& b)
 {
-	if (a.x == b.x && a.y == b.y)
+	return a.x == b.x && a.y == b.y;
+}
+std::ostream& operator<<(std::ostream& out, const Word& word) 
+{
+	switch (word)
 	{
-		return true;
+	case StarGame:
+		out << "Star Game";
+		break;
+	case Setting:
+		out << "Setting";
+		break;
+	case History:
+		out << "History";
+		break;
+	case About:
+		out << "About";
+		break;
+	case Exit:
+		out << "Exit";
+		break;
+	case NewGame:
+		out << "New Game";
+		break;
+	case Continue:
+		out << "Continue";
+		break;
+	default:
+		break;
 	}
-	return false;
+	return out;
+}
+Word operator++(Word& word, int)
+{
+	if (word == Exit) word = StarGame;
+	else if (word == Continue) word = NewGame;
+	else word = static_cast<Word>(word + 1);
+	return Word();
 }
 
-void eatFood(snake& snake, food food)
+void eatFood(snake& snake, food food, direction direction)
 {
 	if (snake.body[0].x == food.x && snake.body[0].y == food.y)
 	{
 		snake.length++;
+		for (int i = snake.length; i > 0; i--)
+		{
+			snake.body[i] = snake.body[i - 1];
+		}
+		snake.body[0].x = food.x;
+		snake.body[0].y = food.y;
 	}
 }
 void moveSnake(snake& snake, direction direction)
@@ -108,13 +148,6 @@ void drawSnake(const snake& snake)
 		Sleep(speed);
 	}
 }
-void impactWall(const snake& snake, int width, int height, bool& isImpact)
-{
-	if (snake.body[0].x == 0 || snake.body[0].x == width - 1 || snake.body[0].y == 0 || snake.body[0].y == height - 1)
-	{
-		isImpact = true;
-	}
-}
 void impactItself(const snake& snake, bool& isImpact)
 {
 	point head = snake.body[0];
@@ -146,50 +179,101 @@ void impactDoor(const snake& snake, const door& door, bool& isImpact, bool& next
 	}
 }
 
-namespace level_1
+namespace game
 {
-	struct obstacle
+	void drawMap(obstacle** theMap, int x, int y)
 	{
-
-	};
-}
-
-namespace level_2
-{
-	struct obstacle
+		int oldMode = _setmode(_fileno(stdout), _O_U16TEXT);
+		for (int i = 0; i < MAXTRIX_SIZE_HEIGHT; i++)
+		{
+			gotoXY(x, y + i);
+			for (int j = 0; j < MAXTRIX_SIZE_WIDTH; j++)
+			{
+				std::wcout << wchar_t(theMap[i][j]);
+			}
+		}
+		oldMode = _setmode(_fileno(stdout), oldMode);
+	}
+	void initMap(obstacle** theMap)
 	{
-
-	};
-}
-
-namespace level_3
-{
-	struct obstacle
+		for (int i = 0; i < MAXTRIX_SIZE_HEIGHT; i++)
+		{
+			for (int j = 0; j < MAXTRIX_SIZE_WIDTH; j++)
+			{
+				theMap[i][j] = obstacle::normal;
+			}
+		}
+	}
+	void initLevel_1(obstacle** theMap)
 	{
+		for (int i = 0; i < MAXTRIX_SIZE_WIDTH; i++)
+		{
+			theMap[0][i] = obstacle::horizontal;
+			theMap[1][i] = obstacle::horizontal;
+			theMap[MAXTRIX_SIZE_HEIGHT - 1][i] = obstacle::horizontal;
+			theMap[MAXTRIX_SIZE_HEIGHT - 2][i] = obstacle::horizontal;
+		}
+		for (int i = 0; i < MAXTRIX_SIZE_HEIGHT; i++)
+		{
+			theMap[i][0] = obstacle::vertical;
+			theMap[i][MAXTRIX_SIZE_WIDTH - MAXTRIX_SIZE_HEIGHT - 1] = obstacle::vertical;
+			theMap[i][MAXTRIX_SIZE_WIDTH - MAXTRIX_SIZE_HEIGHT] = obstacle::vertical;
+			theMap[i][MAXTRIX_SIZE_WIDTH - 1] = obstacle::vertical;
+		}
+		for (int i = 1; i < MAXTRIX_SIZE_HEIGHT - 1; i++)
+		{
+			theMap[i][1] = obstacle::vertical;
+			theMap[i][MAXTRIX_SIZE_WIDTH - MAXTRIX_SIZE_HEIGHT - 2] = obstacle::vertical;
+			theMap[i][MAXTRIX_SIZE_WIDTH - MAXTRIX_SIZE_HEIGHT + 1] = obstacle::vertical;
+			theMap[i][MAXTRIX_SIZE_WIDTH - 2] = obstacle::vertical;
+		}
 
-	};
-}
+		theMap[0][0] = obstacle::up_left;
+		theMap[0][MAXTRIX_SIZE_WIDTH - MAXTRIX_SIZE_HEIGHT - 1] = obstacle::up_right;
+		theMap[MAXTRIX_SIZE_HEIGHT - 1][0] = obstacle::down_left;
+		theMap[MAXTRIX_SIZE_HEIGHT - 1][MAXTRIX_SIZE_WIDTH - MAXTRIX_SIZE_HEIGHT - 1] = obstacle::down_rigth;
+		theMap[1][1] = obstacle::up_left;
+		theMap[1][MAXTRIX_SIZE_WIDTH - MAXTRIX_SIZE_HEIGHT - 2] = obstacle::up_right;
+		theMap[MAXTRIX_SIZE_HEIGHT - 2][1] = obstacle::down_left;
+		theMap[MAXTRIX_SIZE_HEIGHT - 2][MAXTRIX_SIZE_WIDTH - MAXTRIX_SIZE_HEIGHT - 2] = obstacle::down_rigth;
 
-namespace level_4
-{
-	struct obstacle
+		theMap[0][MAXTRIX_SIZE_WIDTH - MAXTRIX_SIZE_HEIGHT] = obstacle::up_left;
+		theMap[0][MAXTRIX_SIZE_WIDTH - 1] = obstacle::up_right;
+		theMap[MAXTRIX_SIZE_HEIGHT - 1][MAXTRIX_SIZE_WIDTH - MAXTRIX_SIZE_HEIGHT] = obstacle::down_left;
+		theMap[MAXTRIX_SIZE_HEIGHT - 1][MAXTRIX_SIZE_WIDTH - 1] = obstacle::down_rigth;
+		theMap[1][MAXTRIX_SIZE_WIDTH - MAXTRIX_SIZE_HEIGHT + 1] = obstacle::up_left;
+		theMap[1][MAXTRIX_SIZE_WIDTH - 2] = obstacle::up_right;
+		theMap[MAXTRIX_SIZE_HEIGHT - 2][MAXTRIX_SIZE_WIDTH - MAXTRIX_SIZE_HEIGHT + 1] = obstacle::down_left;
+		theMap[MAXTRIX_SIZE_HEIGHT - 2][MAXTRIX_SIZE_WIDTH - 2] = obstacle::down_rigth;
+	}
+
+	void initLevel_2(obstacle** theMap)
 	{
+	}
 
-	};
-	struct monster
+	void initLevel_3(obstacle** theMap)
 	{
+	}
 
-	};
-}
-
-namespace level_5
-{
-	struct obstacle
+	void initLevel_4(obstacle** theMap)
 	{
+	}
 
-	};
-	struct monster
+	void initLevel_5(obstacle** theMap)
 	{
+	}
 
-	};
+	void impactWall(const snake& snake, const obstacle** theMap, bool& isImpact)
+	{
+		point head = snake.body[0];
+		if (theMap[head.y][head.x] != obstacle::normal)
+		{
+			isImpact = true;
+		}
+	}
+
+	void drawWin()
+	{
+	}
+
 }
