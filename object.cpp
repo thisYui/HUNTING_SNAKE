@@ -4,8 +4,8 @@
 #include <fcntl.h>
 
 const char* LIST = "2312024523120258231202602312021923120213";
-extern const int MAXTRIX_SIZE_WIDTH = 60;
-extern const int MAXTRIX_SIZE_HEIGHT = 20;
+extern const int MATRIX_SIZE_WIDTH = 60;
+extern const int MATRIX_SIZE_HEIGHT = 20;
 
 snake::snake()
 {
@@ -13,8 +13,8 @@ snake::snake()
 	speed = SNAKE_MIN_SPEED;
 	for (int i = 0; i < length; i++)
 	{
-		body[i].x = 0;
-		body[i].y = 0;
+		body[i].x = 5 - i;
+		body[i].y = 3;
 	}
 }
 snake::~snake()
@@ -98,6 +98,27 @@ Word operator++(Word& word, int)
 	else word = static_cast<Word>(word + 1);
 	return Word();
 }
+Word& operator++(Word& word)
+{
+	if (word == Exit) word = StarGame;
+	else if (word == Continue) word = NewGame;
+	else word = static_cast<Word>(word + 1);
+	return word;
+}
+Word operator--(Word& word, int)
+{
+	if (word == StarGame) word = Exit;
+	else if (word == NewGame) word = Continue;
+	else word = static_cast<Word>(word - 1);
+	return Word();
+}
+Word& operator--(Word& word)
+{
+	if (word == StarGame) word = Exit;
+	else if (word == NewGame) word = Continue;
+	else word = static_cast<Word>(word - 1);
+	return word;
+}
 
 void eatFood(snake& snake, food food, direction direction)
 {
@@ -135,6 +156,8 @@ void moveSnake(snake& snake, direction direction)
 		snake.body[0].x++;
 		break;
 	}
+
+	drawSnake(snake);
 }
 void drawSnake(const snake& snake)
 {
@@ -181,24 +204,33 @@ void impactDoor(const snake& snake, const door& door, bool& isImpact, bool& next
 
 namespace game
 {
-	void drawMap(obstacle** theMap, int x, int y)
+	int start_width = 2;
+	int start_height = 2;
+	int end_width = MATRIX_SIZE_WIDTH - MATRIX_SIZE_HEIGHT - 2;
+	int end_height = MATRIX_SIZE_HEIGHT - 3;
+	
+	void drawMap(obstacle** theMap, int x, int y, int level)
 	{
 		int oldMode = _setmode(_fileno(stdout), _O_U16TEXT);
-		for (int i = 0; i < MAXTRIX_SIZE_HEIGHT; i++)
+		for (int i = 0; i < MATRIX_SIZE_HEIGHT; i++)
 		{
 			gotoXY(x, y + i);
-			for (int j = 0; j < MAXTRIX_SIZE_WIDTH; j++)
+			for (int j = 0; j < MATRIX_SIZE_WIDTH; j++)
 			{
 				std::wcout << wchar_t(theMap[i][j]);
 			}
 		}
+
+		gotoXY(((MATRIX_SIZE_WIDTH - MATRIX_SIZE_HEIGHT) - 7) / 2, 1);
+		std::wcout << L"LEVEL " << level;
+
 		oldMode = _setmode(_fileno(stdout), oldMode);
 	}
 	void initMap(obstacle** theMap)
 	{
-		for (int i = 0; i < MAXTRIX_SIZE_HEIGHT; i++)
+		for (int i = 0; i < MATRIX_SIZE_HEIGHT; i++)
 		{
-			for (int j = 0; j < MAXTRIX_SIZE_WIDTH; j++)
+			for (int j = 0; j < MATRIX_SIZE_WIDTH; j++)
 			{
 				theMap[i][j] = obstacle::normal;
 			}
@@ -206,49 +238,57 @@ namespace game
 	}
 	void initLevel_1(obstacle** theMap)
 	{
-		for (int i = 0; i < MAXTRIX_SIZE_WIDTH; i++)
+		for (int i = 0; i < MATRIX_SIZE_WIDTH; i++)
 		{
 			theMap[0][i] = obstacle::horizontal;
 			theMap[1][i] = obstacle::horizontal;
-			theMap[MAXTRIX_SIZE_HEIGHT - 1][i] = obstacle::horizontal;
-			theMap[MAXTRIX_SIZE_HEIGHT - 2][i] = obstacle::horizontal;
+			theMap[MATRIX_SIZE_HEIGHT - 1][i] = obstacle::horizontal;
+			theMap[MATRIX_SIZE_HEIGHT - 2][i] = obstacle::horizontal;
 		}
-		for (int i = 0; i < MAXTRIX_SIZE_HEIGHT; i++)
+		for (int i = 0; i < MATRIX_SIZE_HEIGHT; i++)
 		{
 			theMap[i][0] = obstacle::vertical;
-			theMap[i][MAXTRIX_SIZE_WIDTH - MAXTRIX_SIZE_HEIGHT - 1] = obstacle::vertical;
-			theMap[i][MAXTRIX_SIZE_WIDTH - MAXTRIX_SIZE_HEIGHT] = obstacle::vertical;
-			theMap[i][MAXTRIX_SIZE_WIDTH - 1] = obstacle::vertical;
+			theMap[i][MATRIX_SIZE_WIDTH - MATRIX_SIZE_HEIGHT - 1] = obstacle::vertical;
+			theMap[i][MATRIX_SIZE_WIDTH - MATRIX_SIZE_HEIGHT] = obstacle::vertical;
+			theMap[i][MATRIX_SIZE_WIDTH - 1] = obstacle::vertical;
 		}
-		for (int i = 1; i < MAXTRIX_SIZE_HEIGHT - 1; i++)
+		for (int i = 1; i < MATRIX_SIZE_HEIGHT - 1; i++)
 		{
 			theMap[i][1] = obstacle::vertical;
-			theMap[i][MAXTRIX_SIZE_WIDTH - MAXTRIX_SIZE_HEIGHT - 2] = obstacle::vertical;
-			theMap[i][MAXTRIX_SIZE_WIDTH - MAXTRIX_SIZE_HEIGHT + 1] = obstacle::vertical;
-			theMap[i][MAXTRIX_SIZE_WIDTH - 2] = obstacle::vertical;
+			theMap[i][MATRIX_SIZE_WIDTH - MATRIX_SIZE_HEIGHT - 2] = obstacle::vertical;
+			theMap[i][MATRIX_SIZE_WIDTH - MATRIX_SIZE_HEIGHT + 1] = obstacle::vertical;
+			theMap[i][MATRIX_SIZE_WIDTH - 2] = obstacle::vertical;
 		}
 
 		theMap[0][0] = obstacle::up_left;
-		theMap[0][MAXTRIX_SIZE_WIDTH - MAXTRIX_SIZE_HEIGHT - 1] = obstacle::up_right;
-		theMap[MAXTRIX_SIZE_HEIGHT - 1][0] = obstacle::down_left;
-		theMap[MAXTRIX_SIZE_HEIGHT - 1][MAXTRIX_SIZE_WIDTH - MAXTRIX_SIZE_HEIGHT - 1] = obstacle::down_rigth;
+		theMap[0][MATRIX_SIZE_WIDTH - MATRIX_SIZE_HEIGHT - 1] = obstacle::up_right;
+		theMap[MATRIX_SIZE_HEIGHT - 1][0] = obstacle::down_left;
+		theMap[MATRIX_SIZE_HEIGHT - 1][MATRIX_SIZE_WIDTH - MATRIX_SIZE_HEIGHT - 1] = obstacle::down_rigth;
 		theMap[1][1] = obstacle::up_left;
-		theMap[1][MAXTRIX_SIZE_WIDTH - MAXTRIX_SIZE_HEIGHT - 2] = obstacle::up_right;
-		theMap[MAXTRIX_SIZE_HEIGHT - 2][1] = obstacle::down_left;
-		theMap[MAXTRIX_SIZE_HEIGHT - 2][MAXTRIX_SIZE_WIDTH - MAXTRIX_SIZE_HEIGHT - 2] = obstacle::down_rigth;
+		theMap[1][MATRIX_SIZE_WIDTH - MATRIX_SIZE_HEIGHT - 2] = obstacle::up_right;
+		theMap[MATRIX_SIZE_HEIGHT - 2][1] = obstacle::down_left;
+		theMap[MATRIX_SIZE_HEIGHT - 2][MATRIX_SIZE_WIDTH - MATRIX_SIZE_HEIGHT - 2] = obstacle::down_rigth;
 
-		theMap[0][MAXTRIX_SIZE_WIDTH - MAXTRIX_SIZE_HEIGHT] = obstacle::up_left;
-		theMap[0][MAXTRIX_SIZE_WIDTH - 1] = obstacle::up_right;
-		theMap[MAXTRIX_SIZE_HEIGHT - 1][MAXTRIX_SIZE_WIDTH - MAXTRIX_SIZE_HEIGHT] = obstacle::down_left;
-		theMap[MAXTRIX_SIZE_HEIGHT - 1][MAXTRIX_SIZE_WIDTH - 1] = obstacle::down_rigth;
-		theMap[1][MAXTRIX_SIZE_WIDTH - MAXTRIX_SIZE_HEIGHT + 1] = obstacle::up_left;
-		theMap[1][MAXTRIX_SIZE_WIDTH - 2] = obstacle::up_right;
-		theMap[MAXTRIX_SIZE_HEIGHT - 2][MAXTRIX_SIZE_WIDTH - MAXTRIX_SIZE_HEIGHT + 1] = obstacle::down_left;
-		theMap[MAXTRIX_SIZE_HEIGHT - 2][MAXTRIX_SIZE_WIDTH - 2] = obstacle::down_rigth;
+		theMap[0][MATRIX_SIZE_WIDTH - MATRIX_SIZE_HEIGHT] = obstacle::up_left;
+		theMap[0][MATRIX_SIZE_WIDTH - 1] = obstacle::up_right;
+		theMap[MATRIX_SIZE_HEIGHT - 1][MATRIX_SIZE_WIDTH - MATRIX_SIZE_HEIGHT] = obstacle::down_left;
+		theMap[MATRIX_SIZE_HEIGHT - 1][MATRIX_SIZE_WIDTH - 1] = obstacle::down_rigth;
+		theMap[1][MATRIX_SIZE_WIDTH - MATRIX_SIZE_HEIGHT + 1] = obstacle::up_left;
+		theMap[1][MATRIX_SIZE_WIDTH - 2] = obstacle::up_right;
+		theMap[MATRIX_SIZE_HEIGHT - 2][MATRIX_SIZE_WIDTH - MATRIX_SIZE_HEIGHT + 1] = obstacle::down_left;
+		theMap[MATRIX_SIZE_HEIGHT - 2][MATRIX_SIZE_WIDTH - 2] = obstacle::down_rigth;
 	}
 
 	void initLevel_2(obstacle** theMap)
 	{
+		theMap[start_height - 1][start_width + (end_width - start_width) / 3] = obstacle::o_3;
+		theMap[end_height + 1][start_width + 2 * (end_width - start_width) / 3] = obstacle::o_2;
+		for(int i = start_height; i < end_height - 5; i++)
+		{
+			theMap[i][start_width + (end_width - start_width) / 3] = obstacle::vertical;
+			theMap[i + 6][start_width + 2 * (end_width - start_width) / 3] = obstacle::vertical;
+		}
+
 	}
 
 	void initLevel_3(obstacle** theMap)

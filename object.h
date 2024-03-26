@@ -51,7 +51,9 @@ enum Word
 	About = 4,
 	Exit = 5,
 	NewGame = 6,
-	Continue = 7
+	Continue = 7,
+	TurnOff = 8,
+	TurnOn = 9
 };
 struct point {
 	int x, y;
@@ -82,20 +84,24 @@ struct user
 {
 	std::string name;
 	int score;
-	double timePlay;
+	int timePlay;
 	user()
 	{
 		name = "";
 		score = 0;
-		timePlay = 0.0;
+		timePlay = 0;
 	}
-	user(const std::string& _name, int _score, double _timePlay)
+	user(const std::string& _name, int _score, int _timePlay)
 		: name(_name), score(_score), timePlay(_timePlay) {}
 };
+
 
 bool operator==(const point& a, const point& b);
 std::ostream& operator<<(std::ostream& out, const Word& word);
 Word operator++(Word& word, int);
+Word& operator++(Word& word);
+Word operator--(Word& word, int);
+Word& operator--(Word& word);
 
 void eatFood(snake& snake, food food, direction direction);//hàm ?n th?c ?n
 void moveSnake(snake& snake, direction direction);//hàm di chuy?n r?n
@@ -105,7 +111,7 @@ void impactDoor(const snake& snake, const door& door, bool& isImpact, bool& next
 
 namespace game
 {
-	void drawMap(obstacle** theMap, int x, int y);
+	void drawMap(obstacle** theMap, int x, int y, int level);
 	void initMap(obstacle** theMap);
 	void initLevel_1(obstacle** theMap);
 	void initLevel_2(obstacle** theMap);

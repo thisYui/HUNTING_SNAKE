@@ -3,6 +3,8 @@
 #include <conio.h>
 #include <io.h>
 #include <fcntl.h>
+#include <thread>
+#include <chrono>
 
 #pragma comment(lib, "winmm.lib")
 
@@ -277,6 +279,50 @@ namespace alphabet
         std::cout << R"(        \::/   /)"; gotoXY(x, y++);
         std::cout << R"(         \/___/)"; gotoXY(x, y++);
     }
+    void printO(int x, int y)
+    {
+        gotoXY(x, y++);
+        std::cout << R"()"; gotoXY(x, y++);
+        std::cout << R"(         ______ )"; gotoXY(x, y++);
+        std::cout << R"(        /::\   \ )"; gotoXY(x, y++);
+        std::cout << R"(       /::::\   \ )"; gotoXY(x, y++);
+        std::cout << R"(      /::::::\   \ )"; gotoXY(x, y++);
+        std::cout << R"(     /:::/\:::\   \ )"; gotoXY(x, y++);
+        std::cout << R"(    /:::/__\:::\   \ )"; gotoXY(x, y++);
+        std::cout << R"(   /:::/   /\:::\   \ )"; gotoXY(x, y++);
+        std::cout << R"(  /:::/   /  \:::\___\ )"; gotoXY(x, y++);
+        std::cout << R"( /:::/   /    \:::|   | )"; gotoXY(x, y++);
+        std::cout << R"(/:::/   /     /:::|___|)"; gotoXY(x, y++);
+        std::cout << R"(\:::\  /     /:::/   /)"; gotoXY(x, y++);
+        std::cout << R"( \:::\/     /:::/   /)"; gotoXY(x, y++);
+        std::cout << R"(  \:::\    /:::/   /)"; gotoXY(x, y++);
+        std::cout << R"(   \:::\  /:::/   /)"; gotoXY(x, y++);
+        std::cout << R"(    \:::\/:::/   /)"; gotoXY(x, y++);
+        std::cout << R"(     \::::::/   /)"; gotoXY(x, y++);
+        std::cout << R"(      \::::/   /)"; gotoXY(x, y++);
+        std::cout << R"(       \__/___/)"; gotoXY(x, y++);
+
+    }
+    void printP(int x, int y)
+    {
+        gotoXY(x, y++);
+        std::cout << R"(          ____)"; gotoXY(x, y++);
+        std::cout << R"(         /\   \ )"; gotoXY(x, y++);
+        std::cout << R"(        /::\   \ )"; gotoXY(x, y++);
+        std::cout << R"(       /::::\   \ )"; gotoXY(x, y++);
+        std::cout << R"(      /::::::\   \ )"; gotoXY(x, y++);
+        std::cout << R"(     /:::/\:::\   \ )"; gotoXY(x, y++);
+        std::cout << R"(    /:::/__\:::\   \ )"; gotoXY(x, y++);
+        std::cout << R"(   /::::\   \:::\   \ )"; gotoXY(x, y++);
+        std::cout << R"(  /::::::\   \:::\___\ )"; gotoXY(x, y++);
+        std::cout << R"( /:::/\:::\   \:::|   | )"; gotoXY(x, y++);
+        std::cout << R"(/:::/__\:::\  /:::|___|)"; gotoXY(x, y++);
+        std::cout << R"(\::/   /\:::\/:::/   /)"; gotoXY(x, y++);
+        std::cout << R"( \/___/  \::::::/   /)"; gotoXY(x, y++);
+        std::cout << R"(          \::::/___/)"; gotoXY(x, y++);
+        std::cout << R"(           ---- )"; gotoXY(x, y++);
+
+    }
     void printU(int x, int y)
     {
         gotoXY(x, y++);
@@ -300,6 +346,51 @@ namespace alphabet
         std::cout << R"(      \::::/   /)"; gotoXY(x, y++);
         std::cout << R"(       \::/   /)"; gotoXY(x, y++);
         std::cout << R"(        \/___/)"; gotoXY(x, y++);
+    }
+    void printV(int x, int y)
+    {
+        gotoXY(x, y++);
+        std::cout << R"(          ____)"; gotoXY(x, y++);
+        std::cout << R"(         /\   \ )"; gotoXY(x, y++);
+        std::cout << R"(        /::\___\ )"; gotoXY(x, y++);
+        std::cout << R"(       /:::/   /)"; gotoXY(x, y++);
+        std::cout << R"(      /:::/   /)"; gotoXY(x, y++);
+        std::cout << R"(     /:::/   / )"; gotoXY(x, y++);
+        std::cout << R"(    /:::/   /)"; gotoXY(x, y++);
+        std::cout << R"(   /:::/   /     ____ )"; gotoXY(x, y++);
+        std::cout << R"(  /:::/___/     /\   \)"; gotoXY(x, y++);
+        std::cout << R"( |:::|   |     /::\___\ )"; gotoXY(x, y++);
+        std::cout << R"( |:::|   |    /:::/   /)"; gotoXY(x, y++);
+        std::cout << R"( |:::|___|   /:::/   /)"; gotoXY(x, y++);
+        std::cout << R"( \:::\   \  /:::/   /)"; gotoXY(x, y++);
+        std::cout << R"(  \:::\   \/:::/   /)"; gotoXY(x, y++);
+        std::cout << R"(   \:::\__/:::/   /)"; gotoXY(x, y++);
+        std::cout << R"(    \::::::::/   /)"; gotoXY(x, y++);
+        std::cout << R"(     \::::::/___/)"; gotoXY(x, y++);
+    }
+    void printW(int x, int y)
+    {
+        gotoXY(x, y++);
+        std::cout << R"(          ____)"; gotoXY(x, y++);
+        std::cout << R"(         /\   \ )"; gotoXY(x, y++);
+        std::cout << R"(        /::\___\ )"; gotoXY(x, y++);
+        std::cout << R"(       /:::/   /)"; gotoXY(x, y++);
+        std::cout << R"(      /:::/   /)"; gotoXY(x, y++);
+        std::cout << R"(     /:::/   / ___)"; gotoXY(x, y++);
+        std::cout << R"(    /:::/   //\   \)"; gotoXY(x, y++);
+        std::cout << R"(   /:::/   //::\___\ )"; gotoXY(x, y++);
+        std::cout << R"(  /:::/   //:::/   /  )"; gotoXY(x, y++);
+        std::cout << R"( /:::/   //:::/   /)"; gotoXY(x, y++);
+        std::cout << R"(|:::|   //:::/   / ___)"; gotoXY(x, y++);
+        std::cout << R"(|:::|__|/:::/   / /\   \)"; gotoXY(x, y++);
+        std::cout << R"(\:::\  /:::/   / /::\___\)"; gotoXY(x, y++);
+        std::cout << R"( \:::\/:::/   / /:::/   /)"; gotoXY(x, y++);
+        std::cout << R"(  \::::::/   / /:::/   /)"; gotoXY(x, y++);
+        std::cout << R"(   \::::/   / /:::/   /)"; gotoXY(x, y++);
+        std::cout << R"(    \:::\  / /:::/   /)"; gotoXY(x, y++);
+        std::cout << R"(     \:::\/ /:::/   /)"; gotoXY(x, y++);
+        std::cout << R"(      \:::\/:::/   /)"; gotoXY(x, y++);
+        std::cout << R"(       \::::::/___/)"; gotoXY(x, y++);
     }
     void printR(int x, int y)
     {
@@ -436,11 +527,23 @@ void init()
     setFontSize(10, 10);
 }
 
-void information(std::string& name)
+void inforName(user*& player, int x, int y)
 {
+    gotoXY(x, y++);
+    int n = 24;
+    int a = 4;
+    int z = 5;
+    alphabet::printN(z, a);
+    alphabet::printA(n + z, a);
+    alphabet::printM(2 * n + z, a);
+    alphabet::printE(3 * n + z, a);
 
+    gotoXY(x + 40, y + 25);
+    std::cout << "Enter your name: ";
+    std::cin >> player->name;
+    std::cin.ignore();
+    system("cls");
 }
-
 Word printMenu(int x, int y)
 {
     int n = 24;
@@ -521,9 +624,219 @@ Word printPlay(int x, int y)
     }
 }
 
-void printInformation(int x, int y, int hieght, int width, user* User, snake& Snake, int level)
+void setMusic(bool& statusTrack, bool& statusSound, int x, int y)
 {
+}
 
+void printRecord(user* listUser, int countUser, int x, int y)
+{
+    gotoXY(x, y++);
+    int n = 24;
+	int m = 4;
+	int z = 5;
+	alphabet::printR(z, m);
+	alphabet::printE(n + z, m);
+	alphabet::printC(2 * n + z, m);
+	alphabet::printO(3 * n + z, m);
+	alphabet::printR(4 * n + z, m);
+	alphabet::printD(5 * n + z, m);
+
+	x += 5; y += 20;
+    for (int i = 0; i < countUser; i++)
+    {
+		gotoXY(x, y++);
+		std::cout << i + 1 << "\t" << listUser[i].name 
+            << "\t" << listUser[i].score;
+	}
+	std::cout << "Press space to continue";
+
+    while (true)
+    {
+        if (_kbhit())
+        {
+			char key = _getch();
+			if (key == 32) return;
+		}
+	}
+}
+void printAboutUs(int x, int y)
+{
+    gotoXY(x, y++);
+    int n = 24;
+	int m = 4;
+	int z = 5;
+	alphabet::printU(z, m);
+    alphabet::printS(n + z, m);
+
+    int olMode = _setmode(_fileno(stdout), _O_U16TEXT);
+
+    x += 60; y += 5;
+    gotoXY(x, y++);
+    std::wcout << L"Đồ án môn học: Kĩ thuật lập trình"; gotoXY(x++, y++);
+    std::wcout << L"Nhóm thực hiện: Nhóm 15"; gotoXY(x, y++);
+    std::wcout << L"Nguyễn Quang Duy - MSSV: 23120245"; gotoXY(x, y++);
+    std::wcout << L"Lưu Trọng Hiếu - MSSV: 23120258"; gotoXY(x, y++);
+    std::wcout << L"Văn Đình Hiếu - MSSV: 23120260"; gotoXY(x, y++);
+    std::wcout << L"Nguyễn Văn Chiến - MSSV: 23120219"; gotoXY(x, y++);
+    std::wcout << L"Võ Việt Anh - MSSV: 23120213";gotoXY(x, y++);
+    std::wcout << L"Press space to continue";
+
+    _setmode(_fileno(stdout), olMode);
+
+    while (true)
+    {
+        if (_kbhit())
+        {
+            char key = _getch();
+            if (key == 32) return;
+        }
+    }
+}
+void printPause(int x, int y)
+{
+    int n = 24;
+    int m = 4;
+    int z = 5;
+    alphabet::printP(z, m);
+    alphabet::printA(n + z, m);
+    alphabet::printU(2 * n + z, m);
+    alphabet::printS(3 * n + z, m);
+    alphabet::printE(4 * n + z, m);
+
+    std::cout << "Press space to continue";
+    while (true)
+    {
+        if (_kbhit())
+        {
+            char key = _getch();
+            if (key == 32) return;
+        }
+    }
+}
+void printGameOver(int x, int y)
+{
+    int n = 24;
+    int m = 4;
+    int z = 5;
+    alphabet::printG(z, m);
+    alphabet::printA(n + z, m);
+    alphabet::printM(2 * n + z, m);
+    alphabet::printE(3 * n + z, m);
+    m += 20;
+    alphabet::printO(z, m);
+    alphabet::printV(n + z, m);
+    alphabet::printE(2 * n + z, m);
+    alphabet::printR(3 * n + z, m);
+
+    while (true)
+    {
+        if (_kbhit())
+        {
+            char key = _getch();
+            if (key == 32) return;
+        }
+    }
+}
+void printWin(int x, int y)
+{
+    int n = 24;
+	int m = 4;
+	int z = 5;
+	alphabet::printW(z, m);
+	alphabet::printI(n + z, m);
+	alphabet::printN(2 * n + z, m);
+
+    while (true)
+    {
+        if (_kbhit())
+        {
+            char key = _getch();
+            if (key == 32) return;
+        }
+    }
+}
+bool printContinue(int x, int y)
+{
+    gotoXY(x, y++);
+    int n = 24;
+	int m = 4;
+	int z = 5;
+	alphabet::printC(z, m);
+	alphabet::printO(n + z, m);
+	alphabet::printN(2 * n + z, m);
+	alphabet::printT(3 * n + z, m);
+	alphabet::printI(4 * n + z, m);
+	alphabet::printN(5 * n + z, m);
+	alphabet::printU(6 * n + z, m);
+	alphabet::printE(7 * n + z, m);
+
+    gotoXY(x + 20, y + 20);
+    std::cout << "Do you want to play continue? (y/n)";
+    while (true)
+    {
+        if (_kbhit())
+        {
+			char key = _getch();
+			if (key == 'y') return true;
+			if (key == 'n') return false;
+		}
+	}
+}
+bool printResult(user* User, int level, int x, int y, bool win)
+{
+    gotoXY(x, y++);
+	std::cout << "Name: " << User->name;
+	gotoXY(x, y++);
+	std::cout << "Score: " << User->score;
+	gotoXY(x, y++);
+    std::cout << "Time: " << User->timePlay;
+	gotoXY(x, y++);
+	std::cout << "Level: " << level;
+	gotoXY(x, y++);
+    
+    if (!win) return false;
+
+    std::cout << "Do you want to save? (y/n)";
+    while (true)
+    {
+		if (_kbhit())
+		{ 
+            char key = _getch();
+            if (key == 'y')
+            {
+                return true;
+			}
+            if (key == 'n')
+            {
+				return false;
+			}
+        }
+    }
+}
+void printInformation(int x, int y, bool& _Playing_, user* User, snake& Snake)
+{
+    gotoXY(x, y + 6);
+    std::cout << "Press 'q' to exit";
+    gotoXY(x, y + 7);
+    std::cout << "Press 'p' to pause";
+    gotoXY(x, y + 8);
+    std::cout << "Press 'o' to turn off music";
+    while (_Playing_)
+    {
+        User->timePlay = int(clock() / CLOCKS_PER_SEC);
+        gotoXY(x, y + 1);
+        std::cout << "Name: " << User->name;
+        gotoXY(x, y + 2);
+        std::cout << "Score: " << User->score;
+        gotoXY(x, y + 3);
+        std::cout << "Time: " << User->timePlay;
+        gotoXY(x, y + 4);
+        std::cout << "Length: " << Snake.length;
+        gotoXY(x, y + 5);
+        std::cout << "Speed: " << Snake.speed;
+        
+        std::this_thread::sleep_for(std::chrono::seconds(1));
+    }
 }
 
 
