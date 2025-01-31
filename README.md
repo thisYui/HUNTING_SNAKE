@@ -14,7 +14,7 @@ Dồ án này thuộc vào học phần Kỹ thuật lập trình của trườn
 - Programming Language: C++11 hoặc bất kì phiên bản tương thích nào khác.
 - Dependencies: Được code bằng Visual Studio 2022.
 
-## Musix
+## Music
 - Âm thanh được sử dụng hoàn toàn cho mục đích học tập, phi thương mại.
 - Nguồn từ: https://pixabay.com/vi/music/
 
