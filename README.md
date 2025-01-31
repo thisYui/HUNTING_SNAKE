@@ -3,7 +3,7 @@ Dồ án này thuộc vào học phần Kỹ thuật lập trình của trườn
 
 ## Description
 - Đây là một đồ án trò chơi rắn săn mồi với giao diện đơn giản thực hiện bằng C++.
-- Dụ án này là dự án cá nhân được thực hiện bởi Nguyễn Quang Duy, sinh viên khóa 2023 thuộc Trường Đại học Khoa học Tự nhiên, ĐHQG-TPHCM.
+- Đồ án này là đồ án cá nhân được thực hiện bởi Nguyễn Quang Duy, sinh viên khóa 2023 thuộc Trường Đại học Khoa học Tự nhiên, ĐHQG-TPHCM.
 
 ## Features
 - Feature 1: Trò chơi đơn giản bao gồm 5 cấp độ.
